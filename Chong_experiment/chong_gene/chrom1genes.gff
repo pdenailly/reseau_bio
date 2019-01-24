@@ -1,0 +1,6 @@
+##gff-version 3
+#!gff-spec-version 1.20
+#!processor NCBI annotwriter
+##sequence-region chrom5genes 1 14000
+chrom5genes	RefSeq	region	1	14000	.	+	.	ID=id0;Name=chrom5genes
+chrom5genes	RefSeq	gene	1201	13200	.	+	.	ID=gene0;Name=gene0
