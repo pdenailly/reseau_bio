@@ -1,10 +1,11 @@
 import random
+import numpy as np
 
 ############################################################################
 #Choisir le type de mutation (inversion ou indel), sortie : type de mutation
 ############################################################################
 def choix_indel_inv(mut=0):
-    return str(random.choices(['indel','inversion'],weights=[0,1],k=1)[0])
+    return np.random.choice(['indel','inversion'],p=[0,1/float(mut)])
 
 
 #########################################################################################
@@ -76,7 +77,7 @@ def indel(dico_genes, liste_barrieres, taille_genome,delta_x,taille_indel):
     #Attention la position doit etre localisee en dehors des genes.
 
     #Choix insertion/deletion
-    choix_indel = str(random.choices(['insertion','deletion'],k=1)[0])
+    choix_indel = str(np.random.choice(['insertion','deletion']))
     
     #nb = random.randrange(1, 6, 1)*delta_x
     nb = taille_indel * delta_x
@@ -208,7 +209,6 @@ if __name__ == '__main__':
         
 
        
-
 
 
 
