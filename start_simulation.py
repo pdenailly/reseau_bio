@@ -1,5 +1,5 @@
 import sys
-import simulation
+import simulation as sim
 #from TCDS import simulation as sim
 import os
 import modelisation_v2 as v2
@@ -10,7 +10,7 @@ import pickle
 import copy
 import math
 import os
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import configparser
 
 
@@ -110,8 +110,8 @@ def calcul_fitness(fitness_cible,fitness_observe):
     #creation matrice observe
     fitness_observe_matrice=np.array(fitness_observe)
     #transformation en frequence
-    fitness_observe_matrice=fitness_observe_matrice/np.sum(fitness_observe_matrice)    
-    fitness_global=math.exp(-np.sum(np.abs(np.log(fitness_observe_matrice/fitness_cible_matrice)))/10)     
+    fitness_observe_matrice=fitness_observe_matrice/np.sum(fitness_observe_matrice)
+    fitness_global=math.exp(-np.sum(np.abs(np.log(fitness_observe_matrice/fitness_cible_matrice))))   
     return (fitness_global)
 
 def recuperer_fitness_cible(INI_file):
@@ -132,8 +132,9 @@ def application_monte_carlo(fitness_avant_mutation,fitness_apres_mutation):
     if (fitness_apres_mutation>=fitness_avant_mutation):
         return True
     else:
-        proba_garder_mutation= np.exp(-1*(fitness_avant_mutation-fitness_apres_mutation)*100)
-        garder=rd.random()<proba_garder_mutation      
+        proba_garder_mutation= np.exp(-1*(fitness_avant_mutation-fitness_apres_mutation)/0.00001)
+        print(proba_garder_mutation)
+        garder=rd.random()<proba_garder_mutation
         return garder
             
     
@@ -166,7 +167,6 @@ def simulation(nb_simulations):
     	#on calcule dans tous les cas un fitness de base
     	if (simulation==0):   
         	liste_debut=[copy.deepcopy(position_gene) ,pos_barriere.copy(),taille_genome]
-        	variation_fitness.append(fitness)
         	variation_nb_transcrits.append(nb_transcrits)
         	liste_changement_position["genome_originelle"]=position_gene
         	ancien_genome_optimal=[position_gene,pos_barriere,taille_genome]
@@ -175,13 +175,12 @@ def simulation(nb_simulations):
         	#on met alors a jour nos variables globales de variation de fitness
         	cle="generation"+str(simulation)
         	liste_changement_position[cle]=position_gene        
-        	variation_fitness.append(fitness)
         	variation_nb_transcrits.append(nb_transcrits) 
         	ancien_genome_optimal=[position_gene,pos_barriere,taille_genome]
     	else:
         	#on est dans le cas ou il n'y a pas eu d'ameliorations de la fitness, dans ce cas, on revient a l'ancien genome le plus optimal
         	fonction_modification_fichiers(INI_file,ancien_genome_optimal)
-    
+    	variation_fitness.append(fitness)
     	#On cree notre nouveau genome, qui sera eventuellement conserve
     	#print("voila ce qu'on envoie a la mutation ",position_gene,pos_barriere,taille_genome,rapport_mut,pas_espace)
     	new_genome=v2.create_new_genome(position_gene,pos_barriere,int(taille_genome+1),rapport_mutation,int(pas_espace),int(taille_indel))  
@@ -210,7 +209,7 @@ liste_debut=[copy.deepcopy(position_gene) ,pos_barriere.copy(),taille_genome]
 
 #Test à part pour le nombre de générations
     
-liste_nb_simulations = [250,400,500,600,700]
+liste_nb_simulations = [250,300,350,400,450,500,550]
 #liste_nb_simulations = [2,5]
 
 path = "/home/paul/Documents/Modélisation réseaux bio/Derniere version /projet_sam_meyer_2/TCDS-v2-master/analysis_scripts/Resultats/nb_simulations"
@@ -220,8 +219,13 @@ liste_fitness_end = []
 for nb_simulations in liste_nb_simulations:
 	variation_fitness = simulation(nb_simulations)
 	liste_fitness_end.append(variation_fitness[-1])
-fonction_modification_fichiers(INI_file,liste_debut)
-#Réinitialisation du paramètre
+	fonction_modification_fichiers(INI_file,liste_debut)
+with open(path + '/Paramètres nombre de simulations.txt', 'w') as f:
+    f.write("Paramètre       fitness\n")
+    for o in range(len(liste_fitness_end)):
+        f.write("%s       %s\n" %(str(liste_nb_simulations[o]), str(liste_fitness_end[o])))
+
+"""
 fig, ax = plt.subplots( nrows=1, ncols=1 )
 ax.plot(liste_nb_simulations, liste_fitness_end)
 ax.set_xlabel('nombre de générations')
@@ -229,7 +233,7 @@ ax.set_ylabel('fitness')
 fig.suptitle('Paramètre nombre de générations', fontsize=16)	
 fig.savefig(path + '/fitness.png')
 plt.close(fig)
-
+"""
 
 
 
@@ -241,14 +245,17 @@ test_parametres = {"['GLOBAL','DELTA_X']":[20,30,40,50,60,70,80,90,100], "['SIMU
 	"['MUTATION','rapport_mutation_insert_invert']":[0.2,0.4,0.6,0.8,1,1.2,1.4,1.6,1.8],"['SIMULATION','GYRASE_CONC']":[0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9],
 	"['MUTATION', 'taille_indel']":[1,2,3,4,5,6]}
 '''
+
 test_parametres = {"['GLOBAL','DELTA_X']":[20], "['SIMULATION','SIM_TIME']":[1000],
 	"['MUTATION','rapport_mutation_insert_invert']":[0.2],"['SIMULATION','GYRASE_CONC']":[0.1],
 	"['MUTATION', 'taille_indel']":[1]}
+
 '''
+
 valeurs_initiales = {"['GLOBAL','DELTA_X']":60, "['SIMULATION','SIM_TIME']":10000, "['MUTATION','rapport_mutation_insert_invert']":1,"['SIMULATION','GYRASE_CONC']":0.3,
 	"['MUTATION', 'taille_indel']":3}
 
-
+i = 0
 for i in range(len(test_parametres)):
 	nom_label = eval(list(test_parametres.keys())[i])[0]
 	nom_categorie = eval(list(test_parametres.keys())[i])[1]
@@ -263,22 +270,20 @@ for i in range(len(test_parametres)):
 		change_parametre(INI_file,nom_label,nom_categorie,val)
 		variation_fitness = simulation(nb_simulations)
 		liste_fitness_end.append(variation_fitness[-1])
-		fig, ax = plt.subplots( nrows=1, ncols=1 )	
-		ax.plot(list(range(len(variation_fitness))), variation_fitness)
-		fig.savefig(path + '/' + str(val) + '.png')
-		plt.close(fig)
 		fonction_modification_fichiers(INI_file,liste_debut)
-	#Réinitialisation du paramètre
+		with open(path + '/Paramètres' + str(val) + '.txt', 'w') as f:
+			f.write("fitness\n")
+			for j in range(len(variation_fitness)):
+				f.write("%s\n" %str(variation_fitness[j]))
 	valeur = list(valeurs_initiales.values())[i]
+	print(valeur)
 	change_parametre(INI_file,nom_label,nom_categorie,valeur)
-	#Et plot de la derniere valeur de fitness / valeur de paramètre
-	fig, ax = plt.subplots( nrows=1, ncols=1 )
-	ax.plot(liste_valeurs, liste_fitness_end)
-	ax.set_xlabel(str(nom_categorie))
-	ax.set_ylabel('fitness')
-	fig.suptitle('Paramètre ' + str(nom_categorie), fontsize=16)	
-	fig.savefig(path + '/fitness.png')
-	plt.close(fig)
+	with open(path + '/Paramètres ' + str(nom_categorie) +  '.txt', 'w') as f:
+		f.write("Paramètre       fitness\n")
+		for k in range(len(liste_fitness_end)):
+			f.write("%s       %s\n" %(str(liste_valeurs[k]), str(liste_fitness_end[k])))
+
+
 
 
 
@@ -302,4 +307,3 @@ with open(nom_fichier_all_data, 'wb') as fichier:
     
     
     
-
