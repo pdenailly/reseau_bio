@@ -233,7 +233,7 @@ matrice_experience=np.transpose(matrice_experience)
 matrice = matrice_experience 
 
 for exp in range(len(matrice)):
-	print("Expérience" + str(exp))
+	print("Experience" + str(exp))
 	for i in range(len(matrice[exp])):
 		nom_label = eval(list(test_parametres.keys())[i])[0]
 		nom_categorie = eval(list(test_parametres.keys())[i])[1]
