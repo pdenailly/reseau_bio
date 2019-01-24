@@ -238,7 +238,7 @@ for exp in range(len(matrice)):
 		nom_label = eval(list(test_parametres.keys())[i])[0]
 		nom_categorie = eval(list(test_parametres.keys())[i])[1]
 		valeur = list(test_parametres.values())[i][matrice[exp][i]]
-		print("On étudie ",nom_categorie," = ",valeur)
+		print("On etudie ",nom_categorie," = ",valeur)
 		change_parametre(INI_file,nom_label,nom_categorie,valeur)
 	variation_fitness = simulation(nb_simulations)
 	with open(path + 'experience_num_' + str(exp) + '.txt', 'w') as f:
