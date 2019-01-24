@@ -209,7 +209,7 @@ liste_debut=[copy.deepcopy(position_gene) ,pos_barriere.copy(),taille_genome]
 
 #Test à part pour le nombre de générations
     
-liste_nb_simulations = [250,300,350,400,450,500,550]
+liste_nb_simulations = [200,450]
 #liste_nb_simulations = [2,5]
 
 path = "/home/bioscience/users/Paul_Alexis_et_bastien/reseau_bio/Resultats/nb_simulations"
@@ -241,9 +241,9 @@ plt.close(fig)
 
 nb_simulations=int(sys.argv[2])
 
-test_parametres = {"['GLOBAL','DELTA_X']":[20,30,40,50,60,70,80,90,100], "['SIMULATION','SIM_TIME']":[1000,3000,5000,7000,9000,11000,13000,15000,17000],
-	"['MUTATION','rapport_mutation_insert_invert']":[0.2,0.4,0.6,0.8,1,1.2,1.4,1.6,1.8],"['SIMULATION','GYRASE_CONC']":[0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9],
-	"['MUTATION', 'taille_indel']":[1,2,3,4,5,6]}
+test_parametres = {"['GLOBAL','DELTA_X']":[40,90], "['SIMULATION','RNAPS_NB']":[3,7],
+	"['MUTATION','rapport_mutation_insert_invert']":[15,7],"['SIMULATION','GYRASE_CONC']":[0.2,0.5,0.9],
+	"['MUTATION', 'taille_indel']":[1,5]}
 '''
 
 test_parametres = {"['GLOBAL','DELTA_X']":[20], "['SIMULATION','SIM_TIME']":[1000],
@@ -252,7 +252,7 @@ test_parametres = {"['GLOBAL','DELTA_X']":[20], "['SIMULATION','SIM_TIME']":[100
 
 '''
 
-valeurs_initiales = {"['GLOBAL','DELTA_X']":60, "['SIMULATION','SIM_TIME']":10000, "['MUTATION','rapport_mutation_insert_invert']":1,"['SIMULATION','GYRASE_CONC']":0.3,
+valeurs_initiales = {"['GLOBAL','DELTA_X']":60, "['SIMULATION','RNAPS_NB']":4, "['MUTATION','rapport_mutation_insert_invert']":25,"['SIMULATION','GYRASE_CONC']":0.3,
 	"['MUTATION', 'taille_indel']":3}
 
 i = 0
