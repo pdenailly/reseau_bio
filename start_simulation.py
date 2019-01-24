@@ -248,40 +248,35 @@ test_parametres = {"['GLOBAL','DELTA_X']":[20], "['SIMULATION','SIM_TIME']":[100
 	"['MUTATION','rapport_mutation_insert_invert']":[0.2],"['SIMULATION','GYRASE_CONC']":[0.1],
 	"['MUTATION', 'taille_indel']":[1]}
 
-'''
+
 
 valeurs_initiales = {"['SIMULATION','RNAPS_NB']":4, "['MUTATION','rapport_mutation_insert_invert']":60,"['SIMULATION','GYRASE_CONC']":0.3,
 	"['MUTATION', 'taille_indel']":3}
 
-i = 0
-for i in range(len(test_parametres)):
-	nom_label = eval(list(test_parametres.keys())[i])[0]
-	nom_categorie = eval(list(test_parametres.keys())[i])[1]
-	liste_valeurs = list(test_parametres.values())[i]
-	path = "/home/biosciences/users/Paul_Alexis_et_bastien/reseau_bio/Resultats/"+eval(list(test_parametres.keys())[i])[1]
-	os.mkdir(path)
-	liste_fitness_end = []
-	print('Test pour',nom_categorie)
-	#Simulations pour les valeurs d'un paramètre + création d'un time series pour chaque valeur de paramètre
-	for val in liste_valeurs:
-		print('valeur :',val)
-		change_parametre(INI_file,nom_label,nom_categorie,val)
-		variation_fitness = simulation(nb_simulations)
-		liste_fitness_end.append(variation_fitness[-1])
-		fonction_modification_fichiers(INI_file,liste_debut)
-		with open(path + '/Paramètres' + str(val) + '.txt', 'w') as f:
-			f.write("fitness\n")
-			for j in range(len(variation_fitness)):
-				f.write("%s\n" %str(variation_fitness[j]))
-	valeur = list(valeurs_initiales.values())[i]
-	print(valeur)
-	change_parametre(INI_file,nom_label,nom_categorie,valeur)
-	with open(path + '/Paramètres ' + str(nom_categorie) +  '.txt', 'w') as f:
-		f.write("Paramètre       fitness\n")
-		for k in range(len(liste_fitness_end)):
-			f.write("%s       %s\n" %(str(liste_valeurs[k]), str(liste_fitness_end[k])))
+'''
+
+path = "/home/paul/Documents/Modélisation réseaux bio/Derniere version /projet_sam_meyer_2/TCDS-v2-master/analysis_scripts/Resultats/"
 
 
+matrice_experience=np.array([[0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],[0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1],[0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1],
+[0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1]],order='F')
+matrice_experience=np.transpose(matrice_experience)
+matrice = matrice_experience 
+
+for exp in range(len(matrice)):
+	print("Expérience" + str(exp))
+	for i in range(len(matrice[exp])):
+		nom_label = eval(list(test_parametres.keys())[i])[0]
+		nom_categorie = eval(list(test_parametres.keys())[i])[1]
+		valeur = list(test_parametres.values())[i][matrice[exp][i]]
+		print("On étudie ",nom_categorie," = ",valeur)
+		change_parametre(INI_file,nom_label,nom_categorie,valeur)
+	variation_fitness = simulation(nb_simulations)
+	with open(path + 'experience_num_' + str(exp) + '.txt', 'w') as f:
+		f.write("fitness\n")
+		for j in range(len(variation_fitness)):
+			f.write("%s\n" %str(variation_fitness[j]))
+	fonction_modification_fichiers(INI_file,liste_debut)
 
 
 
