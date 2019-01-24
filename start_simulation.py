@@ -242,7 +242,7 @@ plt.close(fig)
 nb_simulations=int(sys.argv[2])
 
 test_parametres = {"['GLOBAL','DELTA_X']":[40,90], "['SIMULATION','RNAPS_NB']":[3,7],
-	"['MUTATION','rapport_mutation_insert_invert']":[75,90],"['SIMULATION','GYRASE_CONC']":[0.2,0.5,0.9],
+	"['MUTATION','rapport_mutation_insert_invert']":[75,90],"['SIMULATION','GYRASE_CONC']":[0.2,0.9],
 	"['MUTATION', 'taille_indel']":[1,5]}
 '''
 
