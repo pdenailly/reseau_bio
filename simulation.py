@@ -169,7 +169,7 @@ def get_tr_info(tss, tts, TU_tts, Kon, Poff):
         if tss['TUorient'][i] == '+' :
             # go right
             k = 0 # TTS id index : k start from the first position of each TU
-            proba_rest = 1st
+            proba_rest = 1
             while proba_rest > 0 :
                 if tss['TSS_pos'][i] < this_TU_tts[k]:
                     tr_id.append(j)
