@@ -207,37 +207,6 @@ fitness_optimal=recuperer_fitness_cible(INI_file)
 [position_gene,pos_barriere,taille_genome,rapport_mutation,nb_transcrits,pas_espace,taille_indel]=sim.start_transcribing(INI_file) 
 liste_debut=[copy.deepcopy(position_gene) ,pos_barriere.copy(),taille_genome]
 
-#Test à part pour le nombre de générations
-    
-liste_nb_simulations = [200,450]
-#liste_nb_simulations = [2,5]
-
-path = "/home/biosciences/users/Paul_Alexis_et_bastien/reseau_bio/Resultats/nb_simulations"
-os.mkdir(path)
-liste_fitness_end = []
-#Simulations pour les valeurs d'un paramètre + création d'un time series pour chaque valeur de paramètre
-for nb_simulations in liste_nb_simulations:
-	variation_fitness = simulation(nb_simulations)
-	liste_fitness_end.append(variation_fitness[-1])
-	fonction_modification_fichiers(INI_file,liste_debut)
-with open(path + '/Paramètres nombre de simulations.txt', 'w') as f:
-    f.write("Paramètre       fitness\n")
-    for o in range(len(liste_fitness_end)):
-        f.write("%s       %s\n" %(str(liste_nb_simulations[o]), str(liste_fitness_end[o])))
-
-"""
-fig, ax = plt.subplots( nrows=1, ncols=1 )
-ax.plot(liste_nb_simulations, liste_fitness_end)
-ax.set_xlabel('nombre de générations')
-ax.set_ylabel('fitness')
-fig.suptitle('Paramètre nombre de générations', fontsize=16)	
-fig.savefig(path + '/fitness.png')
-plt.close(fig)
-"""
-
-
-
-#simulations pour plusieurs generations
 
 nb_simulations=int(sys.argv[2])
 
@@ -278,6 +247,39 @@ for exp in range(len(matrice)):
 			f.write("%s\n" %str(variation_fitness[j]))
 	fonction_modification_fichiers(INI_file,liste_debut)
 
+
+
+#Test à part pour le nombre de générations
+    
+liste_nb_simulations = [200,450]
+#liste_nb_simulations = [2,5]
+
+path = "/home/biosciences/users/Paul_Alexis_et_bastien/reseau_bio/Resultats/nb_simulations"
+os.mkdir(path)
+liste_fitness_end = []
+#Simulations pour les valeurs d'un paramètre + création d'un time series pour chaque valeur de paramètre
+for nb_simulations in liste_nb_simulations:
+	variation_fitness = simulation(nb_simulations)
+	liste_fitness_end.append(variation_fitness[-1])
+	fonction_modification_fichiers(INI_file,liste_debut)
+with open(path + '/Paramètres nombre de simulations.txt', 'w') as f:
+    f.write("Paramètre       fitness\n")
+    for o in range(len(liste_fitness_end)):
+        f.write("%s       %s\n" %(str(liste_nb_simulations[o]), str(liste_fitness_end[o])))
+
+"""
+fig, ax = plt.subplots( nrows=1, ncols=1 )
+ax.plot(liste_nb_simulations, liste_fitness_end)
+ax.set_xlabel('nombre de générations')
+ax.set_ylabel('fitness')
+fig.suptitle('Paramètre nombre de générations', fontsize=16)	
+fig.savefig(path + '/fitness.png')
+plt.close(fig)
+"""
+
+
+
+#simulations pour plusieurs generations
 
 
     
