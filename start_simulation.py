@@ -255,7 +255,7 @@ valeurs_initiales = {"['SIMULATION','RNAPS_NB']":4, "['MUTATION','rapport_mutati
 
 '''
 
-path = "/home/paul/Documents/Modélisation réseaux bio/Derniere version /projet_sam_meyer_2/TCDS-v2-master/analysis_scripts/Resultats/"
+path = "/home/biosciences/users/Paul_Alexis_et_bastien/reseau_bio/Resultats/"
 
 
 matrice_experience=np.array([[0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],[0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1],[0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1],
