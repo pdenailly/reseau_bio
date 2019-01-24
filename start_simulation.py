@@ -212,7 +212,7 @@ liste_debut=[copy.deepcopy(position_gene) ,pos_barriere.copy(),taille_genome]
 liste_nb_simulations = [200,450]
 #liste_nb_simulations = [2,5]
 
-path = "/home/bioscience/users/Paul_Alexis_et_bastien/reseau_bio/Resultats/nb_simulations"
+path = "/home/biosciences/users/Paul_Alexis_et_bastien/reseau_bio/Resultats/nb_simulations"
 os.mkdir(path)
 liste_fitness_end = []
 #Simulations pour les valeurs d'un paramètre + création d'un time series pour chaque valeur de paramètre
@@ -260,7 +260,7 @@ for i in range(len(test_parametres)):
 	nom_label = eval(list(test_parametres.keys())[i])[0]
 	nom_categorie = eval(list(test_parametres.keys())[i])[1]
 	liste_valeurs = list(test_parametres.values())[i]
-	path = "/home/bioscience/users/Paul_Alexis_et_bastien/reseau_bio/Resultats/"+eval(list(test_parametres.keys())[i])[1]
+	path = "/home/biosciences/users/Paul_Alexis_et_bastien/reseau_bio/Resultats/"+eval(list(test_parametres.keys())[i])[1]
 	os.mkdir(path)
 	liste_fitness_end = []
 	print('Test pour',nom_categorie)
