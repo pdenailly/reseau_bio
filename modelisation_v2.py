@@ -5,7 +5,7 @@ import numpy as np
 #Choisir le type de mutation (inversion ou indel), sortie : type de mutation
 ############################################################################
 def choix_indel_inv(mut=0):
-    return np.random.choice(['indel','inversion'],p=[0,1/float(mut)])
+    return np.random.choice(['indel','inversion'],p=[(100-mut)/100.0,mut/100.0])
 
 
 #########################################################################################
